@@ -45,7 +45,7 @@ else:
 # `declare_component` and call it done. The wrapper allows us to customize
 # our component's API: we can pre-process its input args, post-process its
 # output value, and add a docstring for users.
-def chat_input_avd(placeholder: str = None, at_bottom: bool = True):
+def chat_input_avd(placeholder: str = None, at_bottom: bool = True, suggestions: list = None):
     """Create a new instance of "chat_input_advanced".
 
         :param placeholder: chat input placeholder
@@ -53,6 +53,6 @@ def chat_input_avd(placeholder: str = None, at_bottom: bool = True):
     """
     if placeholder is None:
         placeholder = 'Your message'
-    new_value = _component_func(placeholder=placeholder, default={'value': ''}, at_bottom=at_bottom)
+    new_value = _component_func(placeholder=placeholder, default={'value': ''}, at_bottom=at_bottom, suggestions=suggestions)
     value = new_value["value"]
     return value

@@ -114,6 +114,7 @@ class ChatInputAdvanced extends StreamlitComponentBase<State> {
     const placeholder = this.props.args["placeholder"];
     const maxHeightArg = this.props.args["maxHeight"];
     const atBottom = this.props.args["at_bottom"];
+    this.state.history = this.props.args["suggestions"];
     if (maxHeightArg) {
       this.setState({ maxHeight: maxHeightArg });
     }
