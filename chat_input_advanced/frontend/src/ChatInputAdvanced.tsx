@@ -126,7 +126,9 @@ class ChatInputAdvanced extends StreamlitComponentBase<State> {
 
     const lightTheme = hasLightBackgroundColor(theme);
     const rootTheme = lightTheme ? LightTheme : DarkTheme;
-    rootTheme.colors.borderSelected = colors.red60;
+    rootTheme.colors.borderSelected = theme === undefined ? colors.red60 : theme.primaryColor;
+    const container_background_color = theme === undefined ? colors.gray60 : theme.secondaryBackgroundColor;
+
     const placeholderColor = lightTheme
       ? colors.gray60
       : colors.gray70;
@@ -174,16 +176,16 @@ class ChatInputAdvanced extends StreamlitComponentBase<State> {
                         outline: "none",
                         backgroundColor: colors.transparent,
                         // Baseweb requires long-hand props, short-hand leads to weird bugs & warnings.
-                        borderLeftWidth: "1px",
-                        borderRightWidth: "1px",
-                        borderTopWidth: "1px",
-                        borderBottomWidth: "1px",
+                        borderLeftWidth: "2px",
+                        borderRightWidth: "2px",
+                        borderTopWidth: "2px",
+                        borderBottomWidth: "2px",
                         width: `${width}px`,
                       },
                     },
                     InputContainer: {
                       style: {
-                        backgroundColor: colors.transparent,
+                        backgroundColor: container_background_color,
                       },
                     },
                     Input: {
@@ -203,8 +205,8 @@ class ChatInputAdvanced extends StreamlitComponentBase<State> {
                         // Baseweb requires long-hand props, short-hand leads to weird bugs & warnings.
                         paddingRight: "3rem",
                         paddingLeft: "0.5rem",
-                        paddingBottom: "0.5rem",
-                        paddingTop: "0.5rem",
+                        paddingBottom: "0.75rem",
+                        paddingTop: "0.75rem",
                       },
                     },
                   }}
@@ -215,7 +217,7 @@ class ChatInputAdvanced extends StreamlitComponentBase<State> {
                     disabled={!this.state.dirty || disabled}
                     data-testid="stChatInputSubmitButton"
                     args={null} width={0} theme={theme}>
-                    <IoSend size="18" color="inherit" />
+                    <IoSend size="26" color="inherit" />
                   </StyledSendIconButton>
                 </StyledSendIconButtonContainer>
               </StyledChatInput>
@@ -230,7 +232,7 @@ class ChatInputAdvanced extends StreamlitComponentBase<State> {
   public handleChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     try {
       const { value: newText } = e.target
-      this.setState({ value: newText, dirty: newText !== "" })
+      this.setState({ value: newText, dirty: false })
       this.setScrollHeight(this.getScrollHeight())
     } catch (e) {
       this.onError(e)
@@ -241,7 +243,7 @@ class ChatInputAdvanced extends StreamlitComponentBase<State> {
     const { metaKey, ctrlKey, shiftKey } = e
     let shouldSubmit = isEnterKeyPressed(e) && !shiftKey && !ctrlKey && !metaKey
     const { key } = e
-    if (isArrowUpPressed(e) && !this.state.dirty) {
+    if (isArrowUpPressed(e)) {
       if (this.state.value === "" && this.state.history.length > 0) {
         const len = this.state.history.length
         this.setState({ value: this.state.history[len - 1], historyIndex: 1 })
@@ -255,12 +257,15 @@ class ChatInputAdvanced extends StreamlitComponentBase<State> {
         const val = this.state.history[len - 1]
         this.setState({ value: val, historyIndex: 1 })
       }
-    } else if (isArrowDownPressed(e) && !this.state.dirty) {
+    } else if (isArrowDownPressed(e)) {
       if (this.state.value !== "" && this.state.historyIndex > 1) {
         const len = this.state.history.length
         const inx = this.state.historyIndex - 1
         const val = this.state.history[len - inx]
         this.setState({ value: val, historyIndex: inx })
+      }
+      else if (this.state.historyIndex === 1) {
+        this.setState({ value: "", historyIndex: 0 })
       }
     }
 
@@ -291,7 +296,7 @@ class ChatInputAdvanced extends StreamlitComponentBase<State> {
       compState.theme = this.props.theme
     }
     Streamlit.setComponentValue(compState)
-    this.state.history?.push(compState.value)
+    //this.state.history?.push(compState.value)
     this.setState(
       state => ({ value: "", dirty: false, history: state.history }),
       // () => Streamlit.setComponentValue(compState),
@@ -305,7 +310,7 @@ class ChatInputAdvanced extends StreamlitComponentBase<State> {
       (window as any).stramlitCustomMessageObserd = new MutationObserver(() => this.scrollChat())
       const listObj = window.parent.document.querySelectorAll("[data-testid=\"stAppViewBlockContainer\"]")
       // have the observer observe for changes in children
-      console.log(`found objects ${listObj.length}`)
+      // console.log(`found objects ${listObj.length}`)
       if (listObj.length > 0) {
         const obj = (listObj[0] as any)
         obj.style.maxHeight = "85%"

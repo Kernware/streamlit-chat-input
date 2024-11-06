@@ -1,3 +1,9 @@
+## Modifications from Kernware
+* Add suggestions/preset history
+* allow keydown to clear the current selection
+* remove local JS history, as we use it after rerun, so history will be empty
+* small UI changes, fixing colors, border width...
+
 # streamlit-chat-input-advanced
 
 Streamlit component that allows you catch arrow up keyboard event

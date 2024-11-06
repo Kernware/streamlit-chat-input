@@ -134,8 +134,7 @@ export class StyledChatInputContainer extends React.PureComponent<StyledChatInpu
     }
 
     if (theme) {
-      // TODO: maybe it should be different one
-      style.backgroundColor = lightTheme ? theme.secondaryBackgroundColor : colors.gray80
+      style.backgroundColor = lightTheme ? theme.secondaryBackgroundColor : theme.backgroundColor
     }
     return (
       <div
@@ -156,6 +155,7 @@ export class StyledChatInput extends StreamlitComponentBase {
       flexGrow: 1,
       backgroundColor: "transparent",
       borderRadius: defaultRadius,
+      marginBottom: "0.2rem",
     }
 
 
