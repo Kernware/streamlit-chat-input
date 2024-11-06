@@ -33,3 +33,22 @@ value = chat_input_avd()
 
 st.write(value)
 ```
+
+## Release Process
+
+Build package:
+```
+npm --prefix ./chat_input_advanced/frontend run build
+```
+
+Create new branch with version
+```
+git checkout -b "v<verison>"
+```
+
+Force push build folder
+```
+git add -f chat_input_advanced/frontend/build/
+```
+
+And then create a new release on github.
