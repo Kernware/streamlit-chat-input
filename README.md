@@ -43,12 +43,14 @@ npm --prefix ./chat_input_advanced/frontend run build
 
 Create new branch with version
 ```
-git checkout -b "v<verison>"
+git checkout -b "v<version>"
 ```
 
-Force push build folder
+Force add build folder and push
 ```
 git add -f chat_input_advanced/frontend/build/
+git commit -m "Release v<version>"
+git push --set-upstream origin v<version>
 ```
 
-And then create a new release on github.
+And then create a new release on github, create a new tag with `release_v<version>`
